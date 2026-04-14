@@ -5,7 +5,7 @@ def is_prime(n):
         return False
     for i in range(2, int(n**0.5) + 1):
         print(f"Checking: {n} % {i} = {n % i}")
-        if n % i == 0:
+        if n % i == 0:  
             print(f"Divisible by {i} → Not Prime")
             return False
     print("No divisors found -> Prime Number")
