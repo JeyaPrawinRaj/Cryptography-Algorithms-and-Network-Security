@@ -1,0 +1,49 @@
+# ================= INSTALLATION (LINUX) =================
+sudo apt-get update && sudo apt-get upgrade -y
+sudo apt-get install -y build-essential libpcap-dev libpcre3-dev \
+libnet1-dev zlib1g-dev luajit hwloc libdnet-dev libdumbnet-dev \
+bison flex liblzma-dev openssl libssl-dev pkg-config \
+libhwloc-dev cmake cpputest libsqlite3-dev uuid-dev \
+libcmocka-dev libnetfilter-queue-dev libmnl-dev autotools-dev \
+libluajit-5.1-dev libunwind-dev libfl-dev
+
+# ================= INSTALL DAQ =================
+cd /tmp
+git clone https://github.com/snort3/libdaq.git
+cd libdaq
+./bootstrap
+./configure
+make
+sudo make install
+sudo ldconfig
+
+# ================= INSTALL SNORT =================
+cd /tmp
+git clone https://github.com/snort3/snort3.git
+cd snort3
+./configure_cmake.sh --prefix=/usr/local --enable-tcmalloc
+cd build
+make -j$(nproc)
+sudo make install
+sudo ldconfig
+
+# ================= VERIFY =================
+snort -V
+
+# ================= WINDOWS =================
+snort -W
+
+# ================= RUN IDS =================
+snort -A console -i 1 -c C:\Snort\etc\snort.conf
+
+# ================= READ PCAP =================
+snort -r C:\path\file.pcap -c C:\Snort\etc\snort.conf -A console
+
+# ================= TEST CONFIG =================
+snort -T -c C:\Snort\etc\snort.conf
+
+# ================= LOG PACKETS =================
+snort -i 1 -c C:\Snort\etc\snort.conf -l C:\Snort\log -b
+
+# ================= IDS MODE =================
+snort -A full -i 1 -c C:\Snort\etc\snort.conf -l C:\Snort\log -q
